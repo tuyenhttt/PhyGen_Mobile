@@ -31,7 +31,7 @@ export default function ChooseCourse() {
           <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => router.push('/onboarding/certified')}
+          onPress={() => router.push('/onboarding/onboarding3')}
           style={styles.nextButton}
         >
           <Text style={styles.nextText}>Next</Text>

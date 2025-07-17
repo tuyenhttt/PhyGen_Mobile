@@ -34,7 +34,7 @@ export default function Welcome() {
           <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => router.push('/onboarding/choose-course')}
+          onPress={() => router.push('/onboarding/onboarding2')}
           style={styles.nextButton}
         >
           <Text style={styles.nextText}>Next</Text>
