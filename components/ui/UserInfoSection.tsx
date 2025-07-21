@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 type UserInfoSectionProps = {
   fullName: string;
-  avatarUrl: string;
+  avatarUrl: string | number;
 };
 
 export default function UserInfoSection({ fullName, avatarUrl }: UserInfoSectionProps) {
@@ -14,7 +14,7 @@ export default function UserInfoSection({ fullName, avatarUrl }: UserInfoSection
         <Text style={styles.name}>{fullName}.</Text>
       </View>
       <Image
-        source={avatarUrl ? { uri: avatarUrl } : require('../../assets/images/j97.png')}
+        source={typeof avatarUrl === 'string' ? { uri: avatarUrl } : avatarUrl}
         style={styles.avatar}
       />
     </View>

@@ -17,8 +17,8 @@ type UserProfile = {
 };
 
 const userProfile: UserProfile = {
-  fullName: 'Nguyễn Đào Minh Thuận',
-  avatarUrl: 'https://partyanimals.com/assets/nemo-1ec2022f.webp',
+  fullName: 'Hack97',
+  avatarUrl: require('../../assets/images/h97.png'),
 };
 
 const examData = [
@@ -26,7 +26,7 @@ const examData = [
     title: 'Đề Vật Lý Kì 1',
     description: 'Lớp 12 - 50 câu - 60 phút',
     color: '#4ade80',
-    img: require('../../assets/images/j97.png'),
+    img: require('../../assets/images/h97.png'),
   },
 ];
 

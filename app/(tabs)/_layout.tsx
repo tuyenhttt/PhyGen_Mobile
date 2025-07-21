@@ -14,6 +14,24 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name='notification'
+        options={{
+          title: 'Notification',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name='notifications' color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name='profile'
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name='person-circle' color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name='explore'
         options={{
           title: 'Explore',
