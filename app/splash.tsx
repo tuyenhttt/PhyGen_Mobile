@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Splash() {
   const router = useRouter();
@@ -20,6 +20,22 @@ export default function Splash() {
         style={styles.logo}
       />
       <Text style={styles.title}>PHYGEN</Text>
+
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={[styles.buttonWrapper, styles.loginButton]}
+          onPress={() => router.replace('/login')}
+        >
+          <Text style={styles.buttonText}>Đăng nhập</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.buttonWrapper, styles.registerButton]}
+          onPress={() => router.replace('/register')}
+        >
+          <Text style={styles.buttonText}>Đăng ký</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -40,6 +56,30 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#ffffffff',
+    color: '#fff',
+    marginBottom: 30,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    gap: 16,
+  },
+  buttonWrapper: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 25,
+    alignItems: 'center',
+  },
+  loginButton: {
+    backgroundColor: '#ffffff',
+  },
+  registerButton: {
+    backgroundColor: '#ffcc00',
+  },
+  buttonText: {
+    color: '#2c1172ff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
