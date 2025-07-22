@@ -1,11 +1,14 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "jsx": "react-native",               // dành cho React Native
     "strict": true,
+    "baseUrl": ".",                      // quan trọng để paths hoạt động
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "contexts/*": ["contexts/*"],
+      "hooks/*": ["hooks/*"],
+      "components/*": ["components/*"]
     }
   },
   "include": [
