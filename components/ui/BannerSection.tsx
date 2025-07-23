@@ -1,28 +1,37 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function BannerSection() {
+
+export type BannerSectionProps = {
+  title: string;
+  buttonText: string;
+  imageUrl?: any;
+};
+
+export default function BannerSection({ title, buttonText, imageUrl }: BannerSectionProps) {
   return (
-    <View style={styles.banner}>
+    <LinearGradient
+      colors={['#ee7724', '#d8363a', '#dd3675', '#b44593']}
+      style={styles.banner}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+    >
       <View style={styles.row}>
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Chào mừng đến với PhyGen</Text>
+          <Text style={styles.title}>{title}</Text>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Tạo đề ngay</Text>
+            <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
         </View>
-        <Image
-          source={{ uri : 'https://d3design.vn/uploads/Anh_bia_summer_sale_holiday_podium_display_on_yellow_background.jpg' }}
-          style={styles.image}
-        />
+        <Image source={ imageUrl } style={styles.image} />
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   banner: {
-    backgroundColor: '#FF6F61',
     borderRadius: 16,
     height: 140,
     justifyContent: 'center',
@@ -48,9 +57,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 8,
     marginRight: 16,
+    maxWidth: 100,
   },
   buttonText: {
     color: '#FF6F61',
+    textAlign: 'center',
   },
   image: {
     width: 130,
