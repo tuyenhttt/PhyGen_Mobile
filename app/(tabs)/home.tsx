@@ -24,8 +24,8 @@ type UserProfile = {
 };
 
 const userProfile: UserProfile = {
-  fullName: 'Hack97',
-  avatarUrl: require('../../assets/images/h97.png'),
+  fullName: 'MTP',
+  avatarUrl: 'https://media.baoquangninh.vn/upload/image/202310/medium/2137902_206e4abf2005d61abfe7561705cc8ce1.png',
 };
 
 const colorPalette = ['#60a5fa', '#facc15', '#f87171', '#34d399', '#c084fc'];
@@ -93,7 +93,7 @@ useEffect(() => {
             <BannerSection
               title={'Tạo đề với PhyGen'}
               buttonText={'Xem thêm'}
-              imageUrl={require('../../assets/images/h97.png')}
+              imageUrl={'https://media.baoquangninh.vn/upload/image/202310/medium/2137902_206e4abf2005d61abfe7561705cc8ce1.png'}
             />
 
             <View style={styles.sectionHeader}>

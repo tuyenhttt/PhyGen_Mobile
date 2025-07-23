@@ -6,13 +6,13 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 export type BannerSectionProps = {
   title: string;
   buttonText: string;
-  imageUrl?: any;
+  imageUrl?: string | any;
 };
 
 export default function BannerSection({ title, buttonText, imageUrl }: BannerSectionProps) {
   return (
     <LinearGradient
-      colors={['#ee7724', '#d8363a', '#dd3675', '#b44593']}
+      colors={['#2E3192', '#1BFFFF']}
       style={styles.banner}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
@@ -24,7 +24,7 @@ export default function BannerSection({ title, buttonText, imageUrl }: BannerSec
             <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableOpacity>
         </View>
-        <Image source={ imageUrl } style={styles.image} />
+        <Image source={typeof imageUrl === 'string' ? { uri: imageUrl } : imageUrl} style={styles.image} />
       </View>
     </LinearGradient>
   );
@@ -51,16 +51,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   button: {
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    borderRadius: 25,
+    overflow: 'hidden',
     marginTop: 8,
     marginRight: 16,
     maxWidth: 100,
   },
+
   buttonText: {
-    color: '#FF6F61',
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#ffffff',
     textAlign: 'center',
   },
   image: {
