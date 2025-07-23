@@ -14,6 +14,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name='exam'
+        options={{
+          title: 'Exam',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name='document-text' color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name='notification'
         options={{
           title: 'Notification',
