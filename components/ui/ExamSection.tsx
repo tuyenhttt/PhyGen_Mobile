@@ -1,27 +1,32 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ExamBox from './ExamBox';
 
-type ExamItem = {
+export type ExamItem = {
   title: string;
-  description: string;
+  description?: string;
+  grade: number;
+  year: number;
   color: string;
   img?: any;
+  pageIndex?: number;
+  pageSize?: number;
 };
 
-type ExamSectionProps = {
+export type ExamSectionProps = {
   data: ExamItem[];
 };
 
 export default function ExamSection({ data }: ExamSectionProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Đề thi</Text>
       {data.map((item, index) => (
         <ExamBox
           key={index}
           title={item.title}
           description={item.description}
+          grade={item.grade}
+          year={item.year}
           color={item.color}
           img={item.img}
         />
