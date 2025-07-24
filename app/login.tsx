@@ -4,15 +4,15 @@ import axios from 'axios';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Alert,
-    Image,
-    Modal,
-    Platform,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  Image,
+  Modal,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export default function LoginScreen() {
@@ -152,12 +152,20 @@ const handleConfirmOTP = async () => {
   </View>
 </Modal>
 
-      <Text style={styles.footerText}>
-        Chưa có tài khoản?
-        <Text style={styles.link} onPress={() => router.push('/register')}>
-          {' '}Đăng ký
-        </Text>
-      </Text>
+      <View style={styles.footerRow}>
+  <Text style={styles.footerText}>
+    Chưa có tài khoản?
+    <Text style={styles.link} onPress={() => router.push('/register')}>
+      {' '}Đăng ký
+    </Text>
+  </Text>
+  <Text style={[styles.footerText, { marginTop: 8 }]}>
+    <Text style={styles.link} onPress={() => router.push('/forgot-password')}>
+      Quên mật khẩu?
+    </Text>
+  </Text>
+</View>
+
     </View>
     
   );
@@ -217,6 +225,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: 'center',
   },
+  footerRow: {
+  marginTop: 20,
+  alignItems: 'center',
+},
   buttonText: {
     color: '#fff',
     fontWeight: '600',
