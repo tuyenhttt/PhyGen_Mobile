@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -18,7 +19,10 @@ export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -33,7 +37,7 @@ export default function ForgotPasswordScreen() {
       );
 
       showAlert('Thành công', 'Nếu email tồn tại, OTP đã được gửi.');
-      setShowOtpPopup(true); // 👉 mở popup nhập OTP + mật khẩu mới
+      setShowOtpPopup(true);
     } catch (error: any) {
       console.error(error);
       showAlert('Lỗi', error?.response?.data?.message || 'Không thể gửi yêu cầu quên mật khẩu');
@@ -41,8 +45,13 @@ export default function ForgotPasswordScreen() {
   };
 
   const handleUpdatePassword = async () => {
-    if (!otp || !newPassword) {
-      showAlert('Lỗi', 'Vui lòng nhập đầy đủ OTP và mật khẩu mới.');
+    if (!otp || !newPassword || !confirmPassword) {
+      showAlert('Lỗi', 'Vui lòng nhập đầy đủ OTP, mật khẩu và xác nhận mật khẩu.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      showAlert('Lỗi', 'Mật khẩu xác nhận không khớp.');
       return;
     }
 
@@ -50,12 +59,13 @@ export default function ForgotPasswordScreen() {
       const res = await axios.post('https://phygen-a3c0gpa8c8gxgmbx.southeastasia-01.azurewebsites.net/api/auths/updatepassword', {
         email,
         new_password: newPassword,
+        confirmPassword: confirmPassword,
         otptext: otp,
       });
 
       showAlert('Thành công', 'Cập nhật mật khẩu thành công.');
       setShowOtpPopup(false);
-      router.replace('/login'); // 👉 chuyển về login
+      router.replace('/login');
     } catch (error: any) {
       console.error(error);
       showAlert('Lỗi', error?.response?.data?.message || 'Không thể cập nhật mật khẩu');
@@ -80,11 +90,12 @@ export default function ForgotPasswordScreen() {
         <Text style={styles.backButtonText}>← Quay lại đăng nhập</Text>
       </TouchableOpacity>
 
-      {/* ======= MODAL NHẬP OTP ======= */}
+      {/* ======= MODAL NHẬP OTP & MẬT KHẨU ======= */}
       <Modal visible={showOtpPopup} transparent animationType="slide">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.title}>Xác thực OTP</Text>
+
             <TextInput
               placeholder="OTP"
               value={otp}
@@ -92,13 +103,43 @@ export default function ForgotPasswordScreen() {
               style={styles.input}
               keyboardType="numeric"
             />
-            <TextInput
-              placeholder="Mật khẩu mới"
-              value={newPassword}
-              onChangeText={setNewPassword}
-              style={styles.input}
-              secureTextEntry
-            />
+
+            {/* Mật khẩu mới */}
+            <View style={styles.passwordContainer}>
+              <TextInput
+                placeholder="Mật khẩu mới"
+                value={newPassword}
+                onChangeText={setNewPassword}
+                style={styles.passwordInput}
+                secureTextEntry={!showNewPassword}
+              />
+              <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)}>
+                <Ionicons
+                  name={showNewPassword ? 'eye-off' : 'eye'}
+                  size={22}
+                  color="#6A0DAD"
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* Xác nhận mật khẩu */}
+            <View style={styles.passwordContainer}>
+              <TextInput
+                placeholder="Xác nhận mật khẩu"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                style={styles.passwordInput}
+                secureTextEntry={!showConfirmPassword}
+              />
+              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                <Ionicons
+                  name={showConfirmPassword ? 'eye-off' : 'eye'}
+                  size={22}
+                  color="#6A0DAD"
+                />
+              </TouchableOpacity>
+            </View>
+
             <TouchableOpacity style={styles.button} onPress={handleUpdatePassword}>
               <Text style={styles.buttonText}>Cập nhật mật khẩu</Text>
             </TouchableOpacity>
@@ -145,6 +186,19 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 12,
     elevation: 5,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#6A0DAD',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 16,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 10,
   },
 });
 
