@@ -1,94 +1,123 @@
 import React, { useEffect, useRef } from 'react';
 import {
-    Animated,
-    Easing,
-    StyleSheet,
-    View,
+  Animated,
+  Easing,
+  StyleSheet,
+  View,
 } from 'react-native';
 
 export default function Loading() {
-  const dot1 = useRef(new Animated.Value(0)).current;
-  const dot2 = useRef(new Animated.Value(0)).current;
-  const dot3 = useRef(new Animated.Value(0)).current;
-  const dot4 = useRef(new Animated.Value(0)).current;
-  const dot5 = useRef(new Animated.Value(0)).current;
+  const rotation = useRef(new Animated.Value(0)).current;
+  const whiteDotOpacity = useRef(new Animated.Value(0)).current;
 
-  const createAnimation = (animatedValue: Animated.Value, delay: number) => {
-    return Animated.loop(
+  const animateRotation = () => {
+    Animated.loop(
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 2400,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+  };
+
+  const animateWhiteDot = () => {
+    Animated.loop(
       Animated.sequence([
-        Animated.timing(animatedValue, {
-          toValue: 1,
-          duration: 300,
-          delay,
+        Animated.timing(whiteDotOpacity, {
+          toValue: 0.6,
+          duration: 800,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
-        Animated.timing(animatedValue, {
+        Animated.timing(whiteDotOpacity, {
           toValue: 0,
-          duration: 300,
+          duration: 800,
           easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
       ])
-    );
+    ).start();
   };
 
   useEffect(() => {
-    createAnimation(dot1, 0).start();
-    createAnimation(dot2, 100).start();
-    createAnimation(dot3, 200).start();
-    createAnimation(dot4, 300).start();
-    createAnimation(dot5, 400).start();
+    animateRotation();
+    animateWhiteDot();
   }, []);
 
-  const renderDot = (animatedValue: Animated.Value, key: string) => {
-    const scale = animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.8, 1.2],
-    });
-
-    const backgroundColor = animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['#b3d4fc', '#6793fb'],
-    });
-
-    return (
-      <Animated.View
-        key={key}
-        style={[
-          styles.dot,
-          {
-            transform: [{ scale }],
-            backgroundColor,
-          },
-        ]}
-      />
-    );
-  };
+  const rotate = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
   return (
-    <View style={styles.container}>
-      {renderDot(dot1, 'dot1')}
-      {renderDot(dot2, 'dot2')}
-      {renderDot(dot3, 'dot3')}
-      {renderDot(dot4, 'dot4')}
-      {renderDot(dot5, 'dot5')}
+    <View style={styles.wrapper}>
+      <Animated.View style={[styles.loader, { transform: [{ rotate }] }]}>
+        {/* White flash dot */}
+        <Animated.View
+          style={[
+            styles.dot,
+            styles.whiteDot,
+            { opacity: whiteDotOpacity },
+          ]}
+        />
+        {/* 4 color dots */}
+        <View style={[styles.dot, styles.dot2]} />
+        <View style={[styles.dot, styles.dot3]} />
+        <View style={[styles.dot, styles.dot4]} />
+        <View style={[styles.dot, styles.dot5]} />
+      </Animated.View>
     </View>
   );
 }
 
+const DOT_SIZE = 24;
+
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    height: '100%',
-    width: '100%',
+  wrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loader: {
+    width: 100,
+    height: 100,
+    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
   },
   dot: {
-    height: 20,
-    width: 20,
-    marginRight: 10,
-    borderRadius: 10,
+    position: 'absolute',
+    width: DOT_SIZE,
+    height: DOT_SIZE,
+    borderRadius: DOT_SIZE / 2,
+  },
+  whiteDot: {
+    backgroundColor: 'white',
+    zIndex: 10,
+  },
+  dot2: {
+    backgroundColor: '#FF4444',
+    top: 0,
+    left: '50%',
+    marginLeft: -DOT_SIZE / 2,
+  },
+  dot3: {
+    backgroundColor: '#FFBB33',
+    top: '50%',
+    left: 0,
+    marginTop: -DOT_SIZE / 2,
+  },
+  dot4: {
+    backgroundColor: '#99CC00',
+    bottom: 0,
+    left: '50%',
+    marginLeft: -DOT_SIZE / 2,
+  },
+  dot5: {
+    backgroundColor: '#33B5E5',
+    top: '50%',
+    right: 0,
+    marginTop: -DOT_SIZE / 2,
   },
 });

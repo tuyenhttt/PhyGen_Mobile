@@ -1,12 +1,12 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-type UserInfoSectionProps = {
+export type UserInfo = {
   fullName: string;
   avatarUrl: string | number;
 };
 
-export default function UserInfoSection({ fullName, avatarUrl }: UserInfoSectionProps) {
+export default function UserInfoSection({ fullName, avatarUrl }: UserInfo) {
   return (
     <View style={styles.container}>
       <View>
