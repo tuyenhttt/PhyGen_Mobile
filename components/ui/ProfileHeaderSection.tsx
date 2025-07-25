@@ -17,11 +17,7 @@ type Props = {
 export default function ProfileHeaderSection({ userProfile }: Props) {
   return (
     <ImageBackground
-      source={ userProfile.avatarUrl
-                ? typeof userProfile.avatarUrl === 'string'
-                  ? { uri: userProfile.avatarUrl }
-                  : userProfile.avatarUrl
-                : require('../../assets/images/avatar.png') }
+      source={ require('../../assets/images/background-profile.png') }
       style={styles.headerContainer}
     >
       <View style={styles.headerContent}>

@@ -18,7 +18,6 @@ import UserInfoSection, { UserInfo } from '../../components/ui/UserInfoSection';
 
 
 const BASE_API_URL = 'https://phygen-a3c0gpa8c8gxgmbx.southeastasia-01.azurewebsites.net'
-const USER_API_URL = '/api/users';
 const EXAM_API_URL = '/api/exams';
 
 const colorPalette = ['#60a5fa', '#facc15', '#f87171', '#34d399', '#c084fc'];
