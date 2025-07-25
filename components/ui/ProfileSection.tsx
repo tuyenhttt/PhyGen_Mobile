@@ -1,69 +1,48 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Image,
-  LayoutAnimation,
-  Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  UIManager,
   View,
 } from 'react-native';
-
-if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental?.(true);
-}
 
 type ProfileSectionProps = {
   title: string;
   icon: any;
-  details: string | string[];
+  details: string | any;
 };
 
-export default function ProfileSection({ title, icon, details, }: ProfileSectionProps) {
-  const [expanded, setExpanded] = useState(true);
-  const detailsList = typeof details === 'string' ? [details] : details ?? [];
+export default function ProfileSection({ title, icon, details }: ProfileSectionProps) {
+  const detailsList =
+    typeof details === 'string'
+      ? [details]
+      : Array.isArray(details)
+        ? details.map(String)
+        : details
+          ? [String(details)]
+          : [];
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity
-        onPress={() => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-          setExpanded(!expanded);
-        }}
-        style={styles.header}
-        activeOpacity={0.7}
-      >
-        <View style={styles.headerLeft}>
-          <Image source={icon} style={styles.icon} />
-          <Text style={styles.title}>{title}</Text>
-        </View>
+      <View style={styles.row}>
+        <Image source={icon} style={styles.icon} />
 
-        <View style={styles.actions}>
-          <Image
-            source={
-              expanded
-                ? require('../../assets/images/up-arrow.png')
-                : require('../../assets/images/down-arrow.png')
-            }
-            style={styles.actionIcon}
-          />
-        </View>
-      </TouchableOpacity>
-
-      {expanded && (
-        <View style={styles.details}>
+        <View style={styles.textContainer}>
           {detailsList.length > 0 ? (
             detailsList.map((item, index) => (
-              <Text key={index} style={styles.detailText}>
-                {item}
+              <Text key={index} style={styles.lineText}>
+                <Text style={styles.title}>{title}: </Text>
+                <Text style={styles.detail}>{item}</Text>
               </Text>
             ))
           ) : (
-            <Text style={styles.detailText}>Không có thông tin chi tiết.</Text>
+            <Text style={styles.lineText}>
+              <Text style={styles.title}>{title}: </Text>
+              <Text style={styles.detail}>Không có thông tin chi tiết.</Text>
+            </Text>
           )}
         </View>
-      )}
+      </View>
     </View>
   );
 }
@@ -76,46 +55,35 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     elevation: 2,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     padding: 16,
+    justifyContent: 'center',
   },
-  headerLeft: {
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 18,
+    height: 18,
     tintColor: '#FFA726',
     marginRight: 12,
   },
+  textContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  lineText: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: '#333',
   },
-  actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  actionIcon: {
-    width: 22,
-    height: 22,
-    tintColor: '#FFA726',
-    marginLeft: 10,
-  },
-  details: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-  },
-  detailText: {
-    fontSize: 15,
+  detail: {
+    fontSize: 16,
     color: '#555',
-    marginTop: 4,
   },
 });

@@ -1,32 +1,25 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 import BannerSection from '../../components/ui/BannerSection';
 import ExamSection, { ExamItem } from '../../components/ui/ExamSection';
 import Loading from '../../components/ui/Loading';
-import UserInfoSection from '../../components/ui/UserInfoSection';
+import UserInfoSection, { UserInfo } from '../../components/ui/UserInfoSection';
 
 
 const BASE_API_URL = 'https://phygen-a3c0gpa8c8gxgmbx.southeastasia-01.azurewebsites.net'
+const USER_API_URL = '/api/users';
 const EXAM_API_URL = '/api/exams';
-
-type UserProfile = {
-  fullName: string;
-  avatarUrl: string;
-};
-
-const userProfile: UserProfile = {
-  fullName: 'MTP',
-  avatarUrl: 'https://media.baoquangninh.vn/upload/image/202310/medium/2137902_206e4abf2005d61abfe7561705cc8ce1.png',
-};
 
 const colorPalette = ['#60a5fa', '#facc15', '#f87171', '#34d399', '#c084fc'];
 const getColorByIndex = (index: number): string => {
@@ -37,8 +30,53 @@ const HomeScreen: React.FC = () => {
 
   const [examData, setExamData] = useState<ExamItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserInfo>({
+    fullName: '',
+    avatarUrl: '',
+  });
+
 
 useEffect(() => {
+  const fetchUserProfile = async (token: string) => {
+    try {
+      if (!token) return;
+
+      const response = await axios.get(`${BASE_API_URL}/api/users/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const userData = response.data;
+      if (userData) {
+        setUserData({
+          fullName: userData.lastName + ' ' + userData.firstName || '',
+          avatarUrl: userData.photoURL ? {uri: userData.photoURL} : require('../../assets/images/avatar.png'),
+        });
+      }
+    } catch (error) {
+      console.error('Lỗi tải thông tin người dùng:', error);
+    }
+  };
+  
+  const getStoredToken = async () => {
+    try {
+      const savedToken = await AsyncStorage.getItem('token');
+      if (!savedToken) {
+        console.warn('Không tìm thấy token trong AsyncStorage');
+        return null;
+      }
+      setToken(savedToken);
+      await fetchUserProfile(savedToken);
+    } catch (err) {
+      console.error('Lỗi đọc token:', err);
+      Alert.alert('Lỗi', 'Không thể đọc token người dùng');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchExams = async () => {
     try {
       setLoading(true);
@@ -72,6 +110,7 @@ useEffect(() => {
     }
   };
 
+  getStoredToken();
   fetchExams();
 }, []);
 
@@ -87,8 +126,8 @@ useEffect(() => {
           <StatusBar barStyle="dark-content" backgroundColor="#F8F8F8" />
           <View style={styles.container}>
             <UserInfoSection
-              fullName={userProfile.fullName}
-              avatarUrl={userProfile.avatarUrl}
+              fullName={userData.fullName}
+              avatarUrl={userData.avatarUrl}
             />
             <BannerSection
               title={'Tạo đề với PhyGen'}

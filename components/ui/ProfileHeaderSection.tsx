@@ -17,7 +17,11 @@ type Props = {
 export default function ProfileHeaderSection({ userProfile }: Props) {
   return (
     <ImageBackground
-      source={require('../../assets/images/j97.png')}
+      source={ userProfile.avatarUrl
+                ? typeof userProfile.avatarUrl === 'string'
+                  ? { uri: userProfile.avatarUrl }
+                  : userProfile.avatarUrl
+                : require('../../assets/images/avatar.png') }
       style={styles.headerContainer}
     >
       <View style={styles.headerContent}>
@@ -28,7 +32,7 @@ export default function ProfileHeaderSection({ userProfile }: Props) {
                 ? typeof userProfile.avatarUrl === 'string'
                   ? { uri: userProfile.avatarUrl }
                   : userProfile.avatarUrl
-                : require('../../assets/images/j97.png')
+                : require('../../assets/images/avatar.png')
             }
             style={styles.avatar}
           />
